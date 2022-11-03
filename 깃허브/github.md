@@ -24,7 +24,7 @@
 - fast-forward
 - 3-way-merge
 - conflict 발생시 MC커밋 들어감
-- 일자로 합쳐서 가독성이 떨어짐
+- 커밋 시간순서대로 합쳐져서 가독성이 떨어짐
 - **Merge 할 때 base가 같은 fast-forward를 사용하고 다르다면 merge commit를 생성해 auto merge 한다.**
 <img src="img/merge.PNG">
 
@@ -48,6 +48,15 @@
 - base가 바뀔 커밋들을 복사해서 이어붙인다(base이후 커밋아이디가 바뀜)
 - rebase는 commit history가 merge와 다르게 선형적으로 이어진다
   <img src="img/rebase.PNG">
+
+- 커밋의 시간에 관계없이 마지막 merge되는 branch의 commit을 가장뒤에 붙임
+  1. C1~C4와 B1의 충돌을 없앤다
+  2. B1과 충돌을 제거한 C1~C4와 B2의 충돌을 제거한다
+  3. B2과 충돌을 제거한 C1~C4와 B3의 충돌을 제거한다
+  4. B3과 충돌을 제거한 C1~C4와 B4의 충돌을 제거한다
+  5. B4과 충돌을 제거한 C1~C4를 B4 뒤에붙인다
+- 충돌 제거과정이 최대 커밋수만큼 나올 수 있다. C1~C4가 C'1~C'4로 변경되면서 force push 하는게 일반적이다.
+<img src="img/rebase2.PNG">
 
 ### Cherry-pick
 - **git cherry-pick e19c319 d1f30c2..d1f32c3**
