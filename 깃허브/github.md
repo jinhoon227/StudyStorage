@@ -46,17 +46,17 @@
 - Merge와 마찬가지로 브랜치를 합친다
 - Merge보다 깔끔한 log가 남는다.(history가 지워지기때문)
 - base가 바뀔 커밋들을 복사해서 이어붙인다(base이후 커밋아이디가 바뀜)
-- rebase는 commit history가 merge와 다르게 선형적으로 이어진다
   <img src="img/rebase.PNG">
-
+  <img src="img/rebase2.PNG">
+- rebase는 commit history가 merge와 다르게 선형적으로 이어진다
 - 커밋의 시간에 관계없이 마지막 merge되는 branch의 commit을 가장뒤에 붙임
   1. C1~C4와 B1의 충돌을 없앤다
   2. B1과 충돌을 제거한 C1~C4와 B2의 충돌을 제거한다
   3. B2과 충돌을 제거한 C1~C4와 B3의 충돌을 제거한다
   4. B3과 충돌을 제거한 C1~C4와 B4의 충돌을 제거한다
   5. B4과 충돌을 제거한 C1~C4를 B4 뒤에붙인다
-- 충돌 제거과정이 최대 커밋수만큼 나올 수 있다. C1~C4가 C'1~C'4로 변경되면서 force push 하는게 일반적이다.
-<img src="img/rebase2.PNG">
+- 충돌 제거과정이 최대 커밋수만큼 나올 수 있다. C1..C4가 C'1..C'4로 변경되면서 force push 하는게 일반적이다.
+
 
 ### Cherry-pick
 - **git cherry-pick e19c319 d1f30c2..d1f32c3**
