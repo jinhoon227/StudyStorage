@@ -96,3 +96,6 @@
 - git reflog 로 복구할 커밋 해쉬값 확인
 - commit 복구 : git reset --hard 커밋Hash
 - 브랜치 복구 : git switch -c 브랜치이름 커밋Hash
+
+### 깃허브 관련
+- [Intellij 깃허브 플러그인 설치](https://velog.io/@_im_ssu/IntelliJ-Git-Commit-Template)
