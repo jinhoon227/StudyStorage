@@ -11,9 +11,9 @@ public interface Comparable<T> {
     public int compareTo(T o);
 }
 ```
-`Comparable` 클래스를 `public int compareTo(T o)` 함수가 선언되어있어,
-만약 사용한다면 해당 함수를 구현해줘야 한다. 그리고 매개변수가 단 **한 개** 만 있어서
-자기자신을 기준으로 비교를 한다. 자기자신과, 비교할 `o` 객체랑 어떻게 비교할지
+`Comparable` 클래스에는 `public int compareTo(T o)` 함수가 선언되어있어,
+사용한다면 해당 함수를 구현해줘야 한다. 그리고 매개변수가 단 **한 개** 만`(T o)` 있다!
+비교대상이 자기자신과 `(T o)` 이기 때문이다. 그래서 자기자신과 비교할 `o` 객체랑 **어떻게** 비교할지
 `public int compareTo(T o)` 함수를 구현해주면 되는것이다.
 
 ```java
@@ -94,7 +94,7 @@ public interface Comparator<T> {
 
 `Comparable` 와는 다르게 구현해야할 `int compare(T o1, T o2)` 의
 매개변수가 2개 이다. `Comparable` 은 자기자신과 비교를 했지만, `Comparator`
-의 경우 두 개의 객체를 이미 넘겨주기에, 넘겨주는 두 개의 객체 서로가 비교대상이다.
+의 경우 두 개의 객체를 넘겨주기에, 넘겨주는 두 개의 객체 서로가 비교대상이다.
 
 ```java
 class Student implements Comparator<Student> {
@@ -189,7 +189,7 @@ class Test {
 `Comparable` 과 다르게 `Student` 클래스에 구현하지 않아도 된다!
 라는건 생각해보면 많은 이점이 있다. `Comparable` 은 `Student` 에 
 단 하나의 기준만 세울 수 있지만, `Comparator` 를 활용하면 여러개의
-익명객체를 만들고 여러가지 기준을 만들어두고 필요할때 골라서 사용할 수 있다. 
+익명객체를 만듬으로써 여러가지 기준에서 필요한것을 골라서 사용할 수 있다. 
 
 ```java
 Student student1 = new Student("a", 50, 60, 70);
@@ -203,7 +203,7 @@ Student student = comparator.compare(student1, student2); // student1 을 반환
 ## 정렬
 
 자바의 경우 기본적으로 오름차순으로 정렬을 해주지만, 특정 객체끼리 정렬을 하면 커스텀이 필요하다.
-그래서 `Comparable` 의 `compareTo` 함수와, `Comparator` 의 `compare` 함수를 이용해
+그래서 `Comparable` 의 `int compareTo(T o)` 함수와, `Comparator` 의 `int compare(T o1, T o2)` 함수를 이용해
 정렬기준을 세우는데 해당 함수 반환값이 둘 다 `int` 이다.
 
 리턴값이
@@ -241,7 +241,8 @@ students.sort(comparatro);
 `Comparable` 의 경우 `Collections.sort(students)` 를 사용해 정렬할 수 있다.
 당연히 `Student` 클래스에 `Comparable` 을 구현하지않으면 에러가 난다.
 
-`Comparator` 의 경우 `Collections` 을 이용하면 익명객체를 함께 넣어줘야한다. 그리고
+`Comparator` 의 경우 `Collections.sort(students)` 을 해도 되지만
+익명객체를 이용한다면 익명객체를 함께 넣어줘야한다. 그리고
 `Comparable` 과 다르게 `Student` 클래스 리스트에서 `sort` 정렬을 익명객체를 넣어서도
 사용할 수 있다.
 
@@ -315,7 +316,7 @@ class Student implements Comparable<Student> {
 
         // 국어점수 같고 영어점수 같고 수학점수 같으면
         return name.compareTo(o2.name); // 이름 사전순으로 정렬
-        // string 의 경우 기본적으로 compareTo 함수를 지원해 정렬할 수 있다.
+        // string 의 경우 기본적으로 compareTo 함수를 이용해 정렬할 수 있다.
     }
 }
 ```
