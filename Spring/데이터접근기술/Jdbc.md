@@ -23,9 +23,13 @@ SQL은 해당 데이터베이스에 맞도록 변경해야한다. (JPA 쓰면 �
 JDBC 는 상당히 로우레벨이라 코드가 복잡해서 이를 간편하게 해결하기위해 여러 기술이 등장했다.
 SQL Mapper 를 이용하거나 ORM 기술을 사용한다.
 
+### SQL Mapper
+
 SQL Mapper : JdbcTemplate, MyBatis 가 있다. JDBC 코드를 좀 더 편하게 작성할 수 있다.
 
 <img src="img/jdbc3.PNG">
+
+### ORM
 
 ORM : JPA 가 있다. 객체를 관계형 데이터베이스 테이블과 매핑하는 기술이다. 반복적인 SQL 를 사용하지
 않아도 되고, 다른 데이터베이스마다 다른 SQL 를 작성하는 문제도 해결해 준다. 실무에서 사용할려면
@@ -37,7 +41,7 @@ ORM : JPA 가 있다. 객체를 관계형 데이터베이스 테이블과 매핑
 
 #### connection/ConnectionConst.java
 ```java
-// DB 정보(주소, 이름, 비번) 에 대한 정보를 저장하는 상수클래스, abstract 선언으로 객체 못만들게 함
+// DB 정보(주소, 이름, 비번) 에 대한 정보를 저장하는 상수클래스, abstract 선언으로 객체로 못만들게 함
 public abstract class ConnectionConst {
     public static final String URL = "jdbc:h2:tcp://localhost/~/testdb";
     public static final String USERNAME = "sa";
@@ -173,6 +177,16 @@ public Member findById(String memberId) {
 ```
 
 `ResultSet` 은 내부의 `cursor` 를 이용해 데이터를 조회한다. `rs.next()` 를 사용할때마다 `cursor` 를 이동시켜서 다음 테이블 데이터를 조회한다.
+
+## 마무리
+
+JDBC Driver 가 어떤것이고, JDBC 코드로 어떻게 짜는지에 대해 작성했다. JDBC Driver 사용이유는 DB 가 변경되도 애플리케이션 코드가 변경되지
+않기위해서 **추상화** 를 이용한 것이다. 이런식으로의 추상화가 앞으로도 많이 등장할것이다. 왜냐하면 최대한 애플리케이션 코드의 수정을 피할려면
+이런 추상화작업이 불가피하기 때문이다. 
+
+그리고 JDBC 코드를 직접 짜봤는데 엄청나게 길고 복잡하다. 실무에서는 거의 안쓰지만, 제일 로우레벨의 코드이기 때문에 이 코드를 기반으로 간편하게
+사용할 수 있는 JDBC Template 이나 JPA 가 나온것이다. 그러니 해당 로우레벨에서 어떤작업이 중요한지 파악하고, 다른 하이레벨 코드에서도
+중요한 작업은 어떤식으로 처리되는지 이해하면 좋을것 같다.
 
 ## Reference
 
