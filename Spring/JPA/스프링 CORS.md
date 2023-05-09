@@ -84,7 +84,7 @@ Simple Request 는 사용메소드나 헤더, Content-Type 에 제약사항이 �
 
 ### Credentialed Request
 
-<img src = "img/cors7=8.PNG">
+<img src = "img/cors8.PNG">
 
 credentialed 인증정보를 추가한 시나리오다. 리소스를 요청할때 `credentials: include` 옵션을 사용할시 발생한다. 해당 옵션
 사용시 요청에는 쿠키정보를 담아서 보낸다. 그리고 응답헤더에 `Access-Control-Allow-Origin : *` 이 사용이 불가능하다.
