@@ -37,7 +37,7 @@
 
 ### 클래스 구조
 
-<img src="img/obj2-4.PNG">
+<img src="img/obj2-3.PNG">
 
 ## 컴파일 시간 의존성과 실행 시간 의존성
 
