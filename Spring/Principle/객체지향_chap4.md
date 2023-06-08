@@ -23,7 +23,7 @@ public class Movie {
     private Money fee;
     private List<DiscountCondition> discountConditions;
     
-    private MovieType movieType;
+    private MovieType movieType; // AMOUNT_DISCOUNT, PERCENT_DISCOUNT, NONE_DISCOUNT
     private Money discountAmount;
     private double discountPercent;
     
@@ -32,11 +32,11 @@ public class Movie {
 
 `Movie` 에 대해 데이터를 먼저 준비해보니 전과 다른점이 있다. 할인조건인 `discountConditions` 가 인스턴스 변수로 `Movie` 안에
 포함되어있다. 그리고 할인정책이 금액 할인 정책 `discountAmount` 와 비율 할인 정책 `discountPercent` 가 포함되어있다. 그리고
-영화에 사용될 할인 정책 종률 결정하기위해 `movieType` 도 추가되었다. 데이터 중심 설계에서는 객체가 포함해야 하는 데이터에 집중하기 때문이다.
+영화에 사용될 할인 정책 종류를 결정하기위해 `movieType` 도 추가되었다. 데이터 중심 설계에서는 객체가 포함해야 하는 데이터에 집중하기 때문이다.
 그렇기에 `Movie` 에서 요금을 계산하기위해서는 해당 필드들이 전부 있어야 계산이 가능하다.
 
 이 외에도 `Screening` `DiscountCondition` `Reservation` `Customer` 각 클래스가
-상태를 포함해서 구현되어있다. 그리고 각 상태에대해 접근할 수 있도록 `get` `set` 메소드가 구현되어있다.
+상태를 포함해서 구현되어있다. 그리고 각 상태에대해 접근할 수 있도록 `get` `set` 메소드가 있다.
 
 그리고 최종적으로 `ReservationAgency` 클래스를 통해 영화예매를 한다.
 
@@ -119,7 +119,7 @@ public class ReservationAgency {
 > 결합도는 의존성의 정도를 나타내며 다른 모듈에 대해 얼마나 많은 지식을 갖고 있는지 나타내는 척도
 
 어떤 모듈이 다른 모듈에 대해 너무 자세한 부분까지 알고있다면 두 모듈은 높은 결합도를 가진다. 반대로
-어던 모듈이 필요한 지식만 알고있다면 두 모듈은 낮은 결합도를 가진다.
+어떤 모듈이 다른 모듈에 대해 필요한 지식만 알고있다면 두 모듈은 낮은 결합도를 가진다.
 
 결합도는 한 모듈이 변경되기 위해서 다른 모듈의 변경을 요구하는 정도롤 측정할 수 있다.
 높은 결합도를 가지는 모듈일수록, 수정 사항이 발생해서 해당 모듈을 변경했을때 추가로 변경해야하는
@@ -183,14 +183,12 @@ public class Movie {
 할인 조건을 판단하는 코드가 함께 존재하기 때문에 새로운 할인정책을 추가하는 작업이
 할인조건에도 영향을 미칠 수 있다. 현재 새로운 할인 정책을 추가하기위해선
 `MovieType` `ReservationAgency` `Movie` 를 수정해야한다.
-- 할인 정책별로 할인 요금을 계산하는 방법이 변경될 경우
+- 할인 정책별로 할인 요금을 계산하는 방법이 변경될 경우 => `ReservationAgency` 에서 계산 방법을 수정해야한다.
 - 할인 조건이 추가되는 경우 => `DiscountConditionType` `ReservationAgency` 수정이 필요해진다.
-- 할인 조건별로 할인 여부를 판단하는 방법이 변경될 경우
-- 예매 요금을 계산하는 방법이 변경될 경우
-
+- 할인 조건별로 할인 여부를 판단하는 방법이 변경될 경우 => `ReservationAgency` 에서 판단 방법이 수정되야한다.
 
 낮은 응집도를 가졌기에 하나의 모듈을 수정하면 다른 모듈도 추가로 수정을 해야한다.
-이는 SOLID 의 단일책임원칙(Single Responsibility Principle) 을 위배한다.
+이는 SOLID 의 단일책임원칙(Single Responsibility Principle) 도 위배한다.
 SRP 를 지킬려면 클래스는 단 한가지의 변경 이유만 가져야 한다. 지금 `ReservationAgency`
 는 변경 이유를 너무나도 많이 가지고있다. 다른 객체의 수정이 일어나면 변경해야되니 말이다.
 
@@ -207,6 +205,8 @@ SRP 를 지킬려면 클래스는 단 한가지의 변경 이유만 가져야 �
 - 객체가 데이터에 대해 수행해야 하는 오퍼레이션은 무엇인가?
 
 포함해야할 데이터와 수행해야할 오퍼레이션을 생각해서 클래스를 바꿔보자
+
+#### DiscountCondition
 
 ```java
 public class DiscountCondition {
@@ -256,6 +256,8 @@ public class DiscountCondition {
 이를 사용하고 클라이언트도 함께 수정되어야 한다. 이는 캡슐화가 실패한것이다.
 
 </details>
+
+#### Movie
 
 ```java
 
@@ -343,6 +345,7 @@ public class Movie {
 
 </details>
 
+#### Screening
 
 ```java
 
@@ -363,7 +366,6 @@ public class Screening {
             case AMOUNT_DISCOUNT:
                 if (movie.isDiscountable(whenScreened, sequence)) {
                     return movie.calculateAmountDiscountedFee().times(audienceCount);
-                    124 오브젝트: 코드로 이해하는 객체지향 설계
                 }
                 break;
             case PERCENT_DISCOUNT:
@@ -401,17 +403,17 @@ public class ReservationAgency {
 ```
 
 `ReservationAgency` 는 이제 `Reservation`, `Screening` 클래스만 이용한다. 클래스 다이어그램은
-다음과 같다. 클래스 다이어그램만 보면 결합도가 개선되었다.
+다음과 같다. 클래스 다이어그램만 보면 `ReservationAgency` 에 대해 결합도가 개선되었다.
 
 <img src="img/obj4-4.PNG">
 
-하지만 여전히 부족하다. 무엇이 구체적으로 부족한지는 각 코드별로 접기/펼치기 를 보길 바란다.
+하지만 여전히 부족하다. 무엇이 구체적으로 부족한지는 각 코드별로 캡슐화, 응집도, 결합도를 클릭해 보길 바란다.
 이번 개선으로 `ReservationAgency` 이 가지던 많은 책임을 다른 곳으로
-옮겼지만, **완전히 옮기지 못했다.**
+옮겼지만, **완전히 옮기지는 못했다.**
 
 ### 데이터 중심 설계의 문제
 
-이는 데이터 중심 설계의 문제이기도 하다.
+메서드를 추가해서 자율적으로 변경했지만, 책임을 완전히 옮기지 못한 이유는 데이터 중심 설계의 문제이기도 하다.
 - 데이터 중심 설계는 본질적으로 너무 이른 시기에 데이터에 관해 결정하도록 강요한다.
 => 처음부터 데이터를 결정하도록 하게하면 내부구현에 초점을 맞추게 된다.
 - 데이터 중심설계에서는 협력이라는 문맥을 고려하지않고 객체를 고립시킨 채 
