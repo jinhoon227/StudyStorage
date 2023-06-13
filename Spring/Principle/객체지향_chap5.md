@@ -220,7 +220,11 @@ public class SequenceCondition implements DiscountCondition {
 이는 구현상에서 관리하기 불편하다. "할인 정책이 변경될 수 있다" 는 요구사항이 있다면
 좀 더 유연한 코드를 가지는 합성을 사용한다.
 
+#### 상속관계시
+
 <img src="img/obj5-2.PNG">
+
+#### 합성관계시 
 
 <img src="img/obj5-3.PNG">
 
